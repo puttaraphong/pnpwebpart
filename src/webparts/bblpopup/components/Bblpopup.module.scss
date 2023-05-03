@@ -1,0 +1,99 @@
+@import '~@fluentui/react/dist/sass/References.scss';
+
+.modalopen {
+  padding-top: 100px;
+  bottom: 0;
+  right: 0;
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 5;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+.modalclose{
+  display: none;
+}
+
+.modalcontent {
+  background-color: #f8f4f4;
+  margin :3 auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 5em;
+  padding-left: 0.5em;
+  padding-right: 1em;
+  padding-top: 2em;
+  //  border: 1px solid red;
+  height: 80%;
+  @media (min-width: 60em) {
+    height:65%;
+    margin-top: 8em ;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4em;
+    max-height: 50em;
+    max-width:66em;
+    width:85%;
+  }
+}
+
+.footermodal{
+  display: flex;
+  z-index: 1;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  z-index: 1;
+  
+  
+  background-color: rgb(245, 244, 243);
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bblpopup {
+  overflow: hidden;
+  padding: 1em;
+  color: "[theme:bodyText, default: #323130]";
+  color: var(--bodyText);
+  &.teams {
+    font-family: $ms-font-family-fallbacks;
+  }
+}
+
+.welcome {
+  text-align: center;
+}
+
+.welcomeImage {
+  width: 100%;
+  max-width: 420px;
+}
+
+.links {
+  a {
+    text-decoration: none;
+    color: "[theme:link, default:#03787c]";
+    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+
+    &:hover {
+      text-decoration: underline;
+      color: "[theme:linkHovered, default: #014446]";
+      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+    }
+  }
+}

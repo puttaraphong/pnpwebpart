@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "bbl-appdev-reactpopup",
+    "id": "4b3d4a0a-7617-4245-89ad-1b1db8dfc0f0",
+    "version": "1.1.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "kputtaraphong",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.16.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "notify modal popup"
+      },
+      "longDescription": {
+        "default": "reactpopup description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "reactpopup Feature",
+        "description": "The feature that activates elements of the reactpopup solution.",
+        "id": "19e58df8-eed7-4833-afbb-8969230671a3",
+        "version": "1.1.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/reactpopup.sppkg"
+  }
+}

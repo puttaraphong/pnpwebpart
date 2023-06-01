@@ -16,13 +16,14 @@
     "@microsoft/sp-lodash-subset": "1.16.1",
     "@microsoft/sp-office-ui-fabric-core": "1.16.1",
     "@microsoft/sp-property-pane": "1.16.1",
-    "@microsoft/sp-webpart-base": "1.16.1",
+    "@microsoft/sp-webpart-base": "^1.16.1",
     "@pnp/spfx-property-controls": "3.13.0",
     "moment": "^2.29.4",
     "office-ui-fabric-react": "^7.199.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "tslib": "2.3.1"
+    "tslib": "2.3.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@microsoft/eslint-config-spfx": "1.16.1",

@@ -5,48 +5,66 @@ import { IBblpopupProps } from './IBblpopupProps';
 import {IBblpopupState} from './IBblpopupState';
 //import { IDateTimeFieldValue } from '@pnp/spfx-property-controls/lib/PropertyFieldDateTimePicker';
 import * as moment from 'moment';
+
 export default class Bblpopup extends React.Component<IBblpopupProps, IBblpopupState> 
 { 
   constructor(props: IBblpopupProps) {
     super(props);
     
-    this.state = {closemodalstate:false, ischecked:false};
+    this.state = {closemodalstate:false, ischecked:false ,webpartstateid : this.props.webpartid };
     this.donotShowAgain = this.donotShowAgain.bind(this);
     this.closePopUp = this.closePopUp.bind(this);
   }
-
+      
   public render(): React.ReactElement<IBblpopupProps> {
     const {
       description,
       url,
       eventEndDate,
-      eventStartDate    
+      eventStartDate, 
+     
     } = this.props;
-   
+
+    //console.log("Write" + this.props.webpartid);
+     
     const closemodalfn = ():string =>{
-    
-      if((today.diff(eventStartDate.value,'days')  > 0) && (today.diff(eventEndDate.value,'days') > 0)){
-        localStorage.removeItem('closemodalstate');
-        return styles.modalclose; 
-      }
-
-      if((today.diff(eventStartDate.value,'days')  < 0) && (today.diff(eventEndDate.value,'days') < 0)){
-        localStorage.removeItem('closemodalstate');
-        return styles.modalclose; 
-      }
-
-         if(this.state.closemodalstate)
-         {
-          return styles.modalclose;         
-         }
-         else
-         {
-          return styles.modalopen; 
-         }
+     
+      const today  =  moment();
+     // console.log('Today '+ today.format('LLLL'))
+     // console.log( 'start:' + today.diff(eventStartDate.value,'hours'));
+    //  console.log('end :' + today.diff(eventEndDate.value,'hours'));
+   
+      if(moment(eventStartDate.value).diff(moment(eventEndDate.value),'hours') == 0 
+      && today.diff(eventStartDate.value,'hours') >= 0 ){
+        console.log("today");
+        if(this.state.closemodalstate)
+        {
+         return styles.modalclose;         
+        }
+        else
+        {
+         return styles.modalopen; 
+        }
+       }
+       else if
+      ((today.diff(eventStartDate.value,'hours')  >= 0) 
+      && (today.diff(eventEndDate.value,'hours')  <= 24))
+      {    
+        if(this.state.closemodalstate)
+        {
+         return styles.modalclose;         
+        }
+        else
+        {
+         return styles.modalopen; 
+        }   
+      }else
+      {
+        localStorage.removeItem('closemodalstate'+ this.props.webpartid);
+        return styles.modalclose;
+      }  
     };
 
-    const today = moment();
-   
     return (
       <div>
         <div id='bblmodal' className= {closemodalfn()}>
@@ -62,11 +80,10 @@ export default class Bblpopup extends React.Component<IBblpopupProps, IBblpopupS
       </div>   
     );
   }
-
-  
+ 
   public componentDidMount(): void { 
-
-   const closestatepop = localStorage.getItem('closemodalstate');
+ 
+   const closestatepop = localStorage.getItem('closemodalstate'+ this.props.webpartid);
 
    if((closestatepop === null) || (closestatepop==='false')){
     this.setState(() => {
@@ -97,13 +114,12 @@ export default class Bblpopup extends React.Component<IBblpopupProps, IBblpopupS
         } 
           
   }
-
   private  closePopUp():void {
 
       if(this.state.ischecked){
-        localStorage.setItem('closemodalstate','true');  
+        localStorage.setItem('closemodalstate'+ this.props.webpartid,'true');  
       }else{
-        localStorage.setItem('closemodalstate','false');  
+        localStorage.setItem('closemodalstate'+ this.props.webpartid,'false');  
       }
       this.setState(() => {
         return {closemodalstate: true};

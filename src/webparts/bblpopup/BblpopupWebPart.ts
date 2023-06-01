@@ -19,13 +19,24 @@ export interface IBblpopupWebPartProps {
   url:string;
   eventStartDate: IDateTimeFieldValue ;
   eventEndDate: IDateTimeFieldValue;
+  webpartid: string;
 }
 
 export default class BblpopupWebPart extends BaseClientSideWebPart<IBblpopupWebPartProps> {
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
+  private _webpartid : string = '';
+
+  constructor(props: IBblpopupWebPartProps) {
+    super()
+    
+  }
 
   public render(): void {
+   
+   console.log("On render");
+
+ 
     const element: React.ReactElement<IBblpopupProps> = React.createElement(
       Bblpopup,
       {
@@ -37,6 +48,8 @@ export default class BblpopupWebPart extends BaseClientSideWebPart<IBblpopupWebP
         userDisplayName: this.context.pageContext.user.displayName,
         eventStartDate: this.properties.eventStartDate,
         eventEndDate: this.properties.eventEndDate,
+        webpartid: this._webpartid
+      
       }
     );
 
@@ -44,13 +57,17 @@ export default class BblpopupWebPart extends BaseClientSideWebPart<IBblpopupWebP
   }
 
   protected onInit(): Promise<void> {
-
+     
+   // console.log("on init ");
     if (!this.properties.eventStartDate){
       this.properties.eventStartDate = { value: moment().toDate(), displayValue: moment().format('LL')};
     }
     if (!this.properties.eventEndDate){
       this.properties.eventEndDate = { value: moment().endOf('month').toDate(), displayValue: moment().format('LL')};
     }
+    this._webpartid = this.context.instanceId.toString();
+    //this.properties.webpartid = new Date().getTime.toString();
+
     return this._getEnvironmentMessage().then(message => {
       this._environmentMessage = message;
     });
@@ -137,7 +154,11 @@ private onEventEndDateValidation(date:string):string{
 protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
  // this.onEventEndDateValidation(this.properties.eventEndDate.value.toString());
   //this.onEventStartDateValidation(this.properties.eventStartDate.value.toString());
-   
+   //console.log("Field Change "+ propertyPath);
+   //if(propertyPath === 'url'){
+   // console.log("change pro"+ propertyPath);
+   //this._webpartid = new Date().getTime().toString();
+  // }
 }
   protected onDispose(): void {
     ReactDom.unmountComponentAtNode(this.domElement);
@@ -162,8 +183,7 @@ protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newVal
                   label: strings.DescriptionFieldLabel
                 }),
                 PropertyPaneTextField('url',{
-                  label:strings.URLFieldLable,
-                  
+                  label:strings.URLFieldLable              
                 }),
                 PropertyFieldDateTimePicker('eventStartDate', {
                   label: 'From',

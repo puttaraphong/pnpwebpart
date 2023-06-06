@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
+import { DisplayMode } from '@microsoft/sp-core-library';
+
 import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField
@@ -13,7 +14,7 @@ import Bblpopup from './components/Bblpopup';
 import { IBblpopupProps } from './components/IBblpopupProps';
 import { PropertyFieldDateTimePicker,DateConvention, IDateTimeFieldValue } from '@pnp/spfx-property-controls/lib/PropertyFieldDateTimePicker';
 import * as moment from 'moment';
-
+import { Placeholder } from "@pnp/spfx-controls-react/lib/Placeholder";
 export interface IBblpopupWebPartProps {
   description: string;
   url:string;
@@ -26,7 +27,7 @@ export default class BblpopupWebPart extends BaseClientSideWebPart<IBblpopupWebP
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
   private _webpartid : string = '';
-
+  private _placeholderComponent: any;
   constructor(props: IBblpopupWebPartProps) {
     super()
     
@@ -34,10 +35,9 @@ export default class BblpopupWebPart extends BaseClientSideWebPart<IBblpopupWebP
 
   public render(): void {
    
-   console.log("On render");
-
- 
-    const element: React.ReactElement<IBblpopupProps> = React.createElement(
+   let renderRootElement: JSX.Element = null;
+    if(this.displayMode === DisplayMode.Read){
+      const bblPopupcomponent: React.ReactElement<IBblpopupProps> = React.createElement(
       Bblpopup,
       {
         url : this.properties.url,
@@ -52,7 +52,31 @@ export default class BblpopupWebPart extends BaseClientSideWebPart<IBblpopupWebP
       
       }
     );
-
+    renderRootElement = bblPopupcomponent;
+  }else if(this.displayMode === DisplayMode.Edit){
+     const placeholder: React.ReactElement<any> = React.createElement(
+      this._placeholderComponent,
+      {
+          iconName: 'BeerMug',
+          iconText: 'Configure your bblpopup webpart',
+          description: 'Please Config the web part',
+          buttonLabel: 'Configure',
+          onConfigure: () => { this.context.propertyPane.open(); }
+      }
+  );
+    
+     renderRootElement = placeholder;
+  }
+  else
+  {
+  
+  renderRootElement = null;
+  }
+  const element = React.createElement(
+    'div',
+    {className: ''},
+    renderRootElement
+  );
     ReactDom.render(element, this.domElement);
   }
 
@@ -68,11 +92,13 @@ export default class BblpopupWebPart extends BaseClientSideWebPart<IBblpopupWebP
     this._webpartid = this.context.instanceId.toString();
     //this.properties.webpartid = new Date().getTime.toString();
 
+    if(this.displayMode === DisplayMode.Edit){
+      this._placeholderComponent = Placeholder;
+    }
     return this._getEnvironmentMessage().then(message => {
       this._environmentMessage = message;
     });
   }
-
 
   private _getEnvironmentMessage(): Promise<string> {
     if (!!this.context.sdks.microsoftTeams) { // running in Teams, office.com or Outlook
@@ -162,10 +188,6 @@ protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newVal
 }
   protected onDispose(): void {
     ReactDom.unmountComponentAtNode(this.domElement);
-  }
-
-  protected get dataVersion(): Version {
-    return Version.parse('1.0');
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {

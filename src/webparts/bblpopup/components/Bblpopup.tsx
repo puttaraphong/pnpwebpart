@@ -34,7 +34,7 @@ export default class Bblpopup extends React.Component<IBblpopupProps, IBblpopupS
      // console.log( 'start:' + today.diff(eventStartDate.value,'hours'));
     //  console.log('end :' + today.diff(eventEndDate.value,'hours'));
    
-      if(moment(eventStartDate.value).diff(moment(eventEndDate.value),'hours') == 0 
+      if(moment(eventStartDate.value).diff(moment(eventEndDate.value),'hours') === 0 
       && today.diff(eventStartDate.value,'hours') >= 0 ){
         console.log("today");
         if(this.state.closemodalstate)
@@ -77,7 +77,8 @@ export default class Bblpopup extends React.Component<IBblpopupProps, IBblpopupS
              </div>
          </div>
         </div>
-      </div>   
+      </div> 
+
     );
   }
  
